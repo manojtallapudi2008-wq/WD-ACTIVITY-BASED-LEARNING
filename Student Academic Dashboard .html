@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #f4f6fb;
+            color: #333;
+        }
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 240px;
+            background: #18243d;
+            color: white;
+            padding: 25px 15px;
+            flex-shrink: 0;
+        }
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            color: #60a5fa;
+        }
+        .sidebar ul {
+            list-style: none;
+        }
+        .sidebar ul li {
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .sidebar ul li:hover,
+        .sidebar ul li.active {
+            background: #304568;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+       .main-content {
+            flex: 1;
+            padding: 25px;
+            min-width: 0;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            color: #18243d;
+            font-size: 27px;
+        }
+        .profile {
+            background: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+        .student-card {
+            background: linear-gradient(120deg, #2563eb, #4f46e5);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        .student-card h2 {
+            margin-bottom: 15px;
+        }
+        .student-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #e1e4ec;
+        }
+        .card h3 {
+            font-size: 15px;
+            color: #777;
+            margin-bottom: 12px;
+        }
+        .card h2 {
+            color: #2563eb;
+            font-size: 27px;
+        }
+       .section {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px #e1e4ec;
+            overflow-x: auto;
+        }
+        .section h2 {
+            margin-bottom: 20px;
+            color: #18243d;
+            font-size: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background: #eef2ff;
+            color: #333;
+        }
+        tr:hover {
+            background: #f8faff;
+        }
+        .status {
+            color: #16a34a;
+            font-weight: bold;
+        }
+        .attendance-item {
+            margin-bottom: 20px;
+        }
+        .attendance-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .progress {
+            width: 100%;
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            border-radius: 20px;
+            background: #2563eb;
+        }
+        .green {
+            background: #16a34a;
+        }
+        .orange {
+            background: #f59e0b;
+        }
+            .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .announcement {
+            padding: 15px;
+            border-left: 4px solid #2563eb;
+            background: #f8faff;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .announcement h3 {
+            margin-bottom: 7px;
+            font-size: 16px;
+        }
+        .announcement p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .exam-date {
+            color: #2563eb;
+            font-weight: bold;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            background-color:blue;
+        }
+        @media (max-width: 1000px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .student-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 700px) {
+            .dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .sidebar ul li {
+                padding: 10px;
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+            .student-info {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 450px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <aside class="sidebar">
+        <h2>student Portal</h2>
+        <ul>
+            <li class="active"><a href="#dashboard"> Dashboard</a></li>
+            <li><a href="#student">Student Profile</a></li>
+            <li><a href="#results"> Semester Results</a></li>
+            <li><a href="#attendance"> Attendance</a></li>
+            <li><a href="#subjects"> Subjects</a></li>
+            <li><a href="#exams">Exam Schedule</a></li>
+            <li><a href="#announcements"> Announcements</a></li>
+        </ul>
+    </aside>
+       <main class="main-content" id="dashboard">
+        <div class="header">
+            <h1>Academic Dashboard</h1>
+            <div class="profile"> Welcome, Manoj Kumar</div>
+        </div>
+              <section class="student-card" id="student">
+            <h2>Student Information</h2>
+            <div class="student-info">
+                <p><strong>Name:</strong> Manoj Kumar</p>
+                <p><strong>Roll Number:</strong> 26001425</p>
+                <p><strong>Department:</strong> Data Science</p>
+                <p><strong>Year:</strong> 1st Year</p>
+                <p><strong>Semester:</strong> 2nd Semester</p>
+                <p><strong>Academic Year:</strong> 2026-2027</p>
+            </div>
+        </section>
+              <div class="cards">
+            <div class="card">
+                <h3>Overall CGPA</h3>
+                <h2>8.75</h2>
+            </div>
+            <div class="card">
+                <h3>Attendance</h3>
+                <h2>92%</h2>
+            </div>
+            <div class="card">
+                <h3>Total Subjects</h3>
+                <h2>6</h2>
+            </div>
+            <div class="card">
+                <h3>Completed Credits</h3>
+                <h2>110</h2>
+            </div>
+        </div>
+               <section class="section" id="results">
+            <h2> Semester Results</h2>
+            <table>
+                <tr>
+                    <th>Subject</th>
+                    <th>Subject Code</th>
+                    <th>Grade</th>
+                    <th>Credits</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <td>Data Structures</td>
+                    <td>CS501</td>
+                    <td>A+</td>
+                    <td>4</td>
+                    <td class="status">Passed</td>
+                </tr>
+                <tr>
+                    <td>Database Management</td>
+                    <td>CS502</td>
+                    <td>A</td>
+                    <td>4</td>
+                    <td class="status">Passed</td>
+                </tr>
+                <tr>
+                    <td>Operating Systems</td>
+                    <td>CS503</td>
+                    <td>B+</td>
+                    <td>3</td>
+                    <td class="status">Passed</td>
+                </tr>
+                <tr>
+                    <td>Computer Networks</td>
+                    <td>CS504</td>
+                    <td>A+</td>
+                    <td>3</td>
+                    <td class="status">Passed</td>
+                </tr>
+                <tr>
+                    <td>Software Engineering</td>
+                    <td>CS505</td>
+                    <td>A</td>
+                    <td>3</td>
+                    <td class="status">Passed</td>
+                </tr>
+            </table>
+        </section>
+              <section class="section" id="attendance">
+            <h2>📅 Subject Attendance</h2>
+            <div class="attendance-item">
+                <div class="attendance-info">
+                    <span>Data Structures</span>
+                    <strong>95%</strong>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar green"
+                         style="width:95%"></div>
+                </div>
+            </div>
+            <div class="attendance-item">
+                <div class="attendance-info">
+                    <span>Database Management</span>
+                    <strong>90%</strong>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar"
+                         style="width:90%"></div>
+                </div>
+            </div>
+            <div class="attendance-item">
+                <div class="attendance-info">
+                    <span>Operating Systems</span>
+                    <strong>85%</strong>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar orange"
+                         style="width:85%"></div>
+                </div>
+            </div>
+            <div class="attendance-item">
+                <div class="attendance-info">
+                    <span>Computer Networks</span>
+                    <strong>92%</strong>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar green"
+                         style="width:92%"></div>
+                </div>
+            </div>
+            <div class="attendance-item">
+                <div class="attendance-info">
+                    <span>Software Engineering</span>
+                    <strong>88%</strong>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar"
+                         style="width:88%"></div>
+                </div>
+            </div>
+        </section>
+           <section class="section" id="subjects">
+            <h2>📚 Subject Information</h2>
+            <table>
+                <tr>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Faculty</th>
+                    <th>Credits</th>
+                </tr>
+                <tr>
+                    <td>CS501</td>
+                    <td>Data Structures</td>
+                    <td>Mr. Suresh</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>CS502</td>
+                    <td>Database Management</td>
+                    <td>Mrs. Priya</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>CS503</td>
+                    <td>Operating Systems</td>
+                    <td>Mr. Ramesh</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>CS504</td>
+                    <td>Computer Networks</td>
+                    <td>Mrs. Kavya</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>CS505</td>
+                    <td>Software Engineering</td>
+                    <td>Mr. Arun</td>
+                    <td>3</td>
+                </tr>
+            </table>
+        </section>
+           <div class="bottom-grid">
+               <section class="section" id="exams">
+                <h2>📝 Examination Schedule</h2>
+                <table>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Date</th>
+                    </tr>
+                    <tr>
+                        <td>Data Structures</td>
+                        <td class="exam-date">20-11-2026</td>
+                    </tr>
+                    <tr>
+                        <td>DBMS</td>
+                        <td class="exam-date">23-11-2026</td>
+                    </tr>
+                    <tr>
+                        <td>Operating Systems</td>
+                        <td class="exam-date">26-11-2026</td>
+                    </tr>
+                    <tr>
+                        <td>Computer Networks</td>
+                        <td class="exam-date">29-11-2026</td>
+                    </tr>
+                </table>
+            </section>
+                      <section class="section" id="announcements">
+                <h2>📢 Announcements</h2>
+                <div class="announcement">
+                    <h3>Semester Examination</h3>
+                    <p>
+                        Semester examinations begin from
+                        20th November 2026. Students should
+                        download their hall tickets.
+                    </p>
+                </div>
+                <div class="announcement">
+                    <h3>Assignment Submission</h3>
+                    <p>
+                        Submit all pending assignments
+                        before 15th November 2026.
+                    </p>
+                </div>
+                <div class="announcement">
+                    <h3>College Event</h3>
+                    <p>
+                        Annual technical fest will be
+                        conducted on 10th December 2026.
+                    </p>
+                </div>
+            </section>
+        </div>
+        <footer>
+             2026 Student Academic Dashboard | All Rights Reserved
+        </footer>
+    </main>
+</div>
+</body>
+</html>
